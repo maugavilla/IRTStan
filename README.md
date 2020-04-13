@@ -5,5 +5,5 @@ For every model there are unidimensional and multidimensional versions
 
 ```
 # from github:
-remotes::install_github("ecmerkle/blavaan", INSTALL_opts = "--no-multiarch")
+remotes::install_github("maugavilla/IRTStan")
 ```
