@@ -20,7 +20,7 @@ run_IRT_Stan <- function(data,
 
   if(model == "grm"){
     if(sum(data == 0) > 0){stop("For GRM the ordinal data most start at 1 instead of 0. \n
-                                Recode the data to have no zeros")}
+                                Recode the data to have no zeros") }
   }
 
   ### select desired model
@@ -49,13 +49,13 @@ run_IRT_Stan <- function(data,
 
       out <- stan(data=dat_stan,
                   pars=pars,
-                  model_code=mod,
+                  model_code=models_stan[[mod]],
                   chains=chains,
                   iter=iters,
                   warmup=burn,
                   cores=cores)
 
-      ss <- summary(OUT_grm)$summary
+      ss <- summary(out)$summary
       rhat <- max(ss[,"Rhat"], na.rm=T)
       print(paste0("Rhat=",rhat))
     }
@@ -65,7 +65,7 @@ run_IRT_Stan <- function(data,
 
     out <- stan(data=dat_stan,
                 pars=pars,
-                model_code=mod,
+                model_code=models_stan[[mod]],
                 chains=chains,
                 iter=iter,
                 warmup=burnin,
