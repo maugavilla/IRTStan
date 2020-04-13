@@ -13,7 +13,8 @@ run_IRT_Stan <- function(data,
                          log_lik = F,
                          theta = F,
                          convergence_loop = T,
-                         Rhat_criteria = 1.05){
+                         Rhat_criteria = 1.05,
+                         personal_model=NULL){
 
 
   model <- tolower(model)
@@ -26,6 +27,9 @@ run_IRT_Stan <- function(data,
   ### select desired model
   if(D == 1){ mod <- paste0("irt_", model, "_1d" ) }
   if( D > 1){ mod <- paste0("irt_", model, "_md" ) }
+
+  if(is.null(personal_model)){stan_mod <- models_stan[[mod]]}else{
+    stan_mod <- personal_model}
 
   ### get parameters to extract
   pars <- params[[mod]]
@@ -49,7 +53,7 @@ run_IRT_Stan <- function(data,
 
       out <- stan(data=dat_stan,
                   pars=pars,
-                  model_code=models_stan[[mod]],
+                  model_code=stan_mod,
                   chains=chains,
                   iter=iters,
                   warmup=burn,
@@ -65,7 +69,7 @@ run_IRT_Stan <- function(data,
 
     out <- stan(data=dat_stan,
                 pars=pars,
-                model_code=models_stan[[mod]],
+                model_code=stan_mod,
                 chains=chains,
                 iter=iter,
                 warmup=burnin,
