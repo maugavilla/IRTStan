@@ -59,7 +59,7 @@ dev = -2*log_lik0; // model deviance
 "
 ,
 ### multiple Dimensions, 2PL
-irt_2pl_mD = "
+irt_2pl_md = "
 data{
 int N; //number of subjects
 int n; // number of items
@@ -160,7 +160,7 @@ x[i,j] ~ bernoulli( c[j] + (1-c[j]) * inv_logit( a[j] * (theta[i] - b[j]) ) );
 
 b ~ normal(0,1);  /// difficulty prior
 a ~ lognormal(0,1); /// or lognormal(0,2)
-c ~ beta(5,23);  /// beta(5,17)
+c ~ beta(5,17);  /// beta(5,23)
 theta ~ normal(0,1); // latent factor
 
 }
@@ -188,7 +188,7 @@ dev = -2*log_lik0; // model deviance
 "
 ,
 #### multiple D, 3PL
-irt_3pl_mD = "
+irt_3pl_md = "
 data{
 int N; //number of subjects
 int n; // number of items
@@ -234,7 +234,7 @@ x[i,j] ~ bernoulli( c[j] + (1-c[j]) * inv_logit( a[j] * (theta[i,it_d[j]] - b[j]
 
 L_corr_d ~ lkj_corr_cholesky(1);
 b ~ normal(0,1);  /// difficulty prior
-c ~ beta(5,23);  /// beta(5,17)
+c ~ beta(5,17);  /// beta(5,23)
 a_norm_pos ~ normal(0,1); // discrimination prior
 a_norm_rest ~ normal(0,1);// discrimination prior
 theta ~ multi_normal_cholesky(mu_d, L_corr_d); // latent factor multivariate normal distribution
@@ -267,7 +267,7 @@ dev = -2*log_lik0; // model deviance
 "
 ,
 ## GRM 1 dimension
-grm_1d = "
+irt_grm_1d = "
 data{
 int n; //number of subjects
 int p; // number of items
@@ -342,7 +342,7 @@ dev = -2*log_lik0; // model deviance
 "
 ,
 ## GMR multiple Dim
-grm_stan_md = "
+irt_grm_md = "
 data{
 int n; //number of subjects
 int p; // number of items
@@ -437,11 +437,11 @@ dev = -2*log_lik0; // model deviance
 
 params <- list(
   irt_2pl_1d = c("a","b","log_lik0","dev"),
-  irt_2pl_mD = c("a","b","corr_d","log_lik0","dev"),
+  irt_2pl_md = c("a","b","corr_d","log_lik0","dev"),
   irt_3pl_1d = c("a","b","c","log_lik0","dev"),
-  irt_3pl_mD = c("a","b","c","corr_d","log_lik0","dev"),
-  grm_1d = c("alpha","thresholds","log_lik0","dev"),
-  grm_stan_md = c("alpha","thresholds","corr_d","log_lik0","dev")
+  irt_3pl_md = c("a","b","c","corr_d","log_lik0","dev"),
+  irt_grm_1d = c("alpha","thresholds","log_lik0","dev"),
+  irt_grm_md = c("alpha","thresholds","corr_d","log_lik0","dev")
 )
 
 
