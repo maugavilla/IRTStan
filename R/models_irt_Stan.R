@@ -1,8 +1,9 @@
 
 
 ### Stan models
+### this file has the Stan code for the 2Pl, 3PL and GRM models
 
-## add 
+## add
 ## Partial credit and nominal later
 
 
@@ -31,7 +32,7 @@ x[i,j] ~ bernoulli_logit(a[j] * (theta[i] - b[j]) );
 
 b ~ normal(0,1);  /// difficulty prior
 a ~ lognormal(0,1); /// or lognormal(0,2)
-theta ~ normal(0,1); // latent factor 
+theta ~ normal(0,1); // latent factor
 
 }
 
@@ -151,7 +152,7 @@ real<lower=0, upper=1> c[n];
 
 model{
 
-for(i in 1:N){// 
+for(i in 1:N){//
 for(j in 1:n){
 x[i,j] ~ bernoulli( c[j] + (1-c[j]) * inv_logit( a[j] * (theta[i] - b[j]) ) );
 }
@@ -160,7 +161,7 @@ x[i,j] ~ bernoulli( c[j] + (1-c[j]) * inv_logit( a[j] * (theta[i] - b[j]) ) );
 b ~ normal(0,1);  /// difficulty prior
 a ~ lognormal(0,1); /// or lognormal(0,2)
 c ~ beta(5,23);  /// beta(5,17)
-theta ~ normal(0,1); // latent factor 
+theta ~ normal(0,1); // latent factor
 
 }
 
@@ -311,21 +312,21 @@ kappa[i,k] ~ normal(mu_kappa, sigma_kappa);
 mu_kappa ~ normal(0,5);
 sigma_kappa ~ cauchy(0,5);
 
-alpha ~ lognormal(0,sigma_alpha); 
+alpha ~ lognormal(0,sigma_alpha);
 sigma_alpha ~ cauchy(0,5);
 
 theta ~ normal(0, 1);
 
 }
 
-// 
+//
 generated quantities {
 vector[p] log_lik[n]; ///// row log likelihood
 real dev; /////// deviance
 real log_lik0; ///// global log likelihood
 vector[n] log_lik_row;
 
-for(i in 1:n){// 
+for(i in 1:n){//
 for(j in 1:p){
 log_lik[i,j] = ordered_logistic_lpmf(x[i,j] | alpha[j] * theta[i], kappa[j] );
 }
@@ -340,7 +341,7 @@ dev = -2*log_lik0; // model deviance
 }
 "
 ,
-## GMR multiple Dim 
+## GMR multiple Dim
 grm_stan_md = "
 data{
 int n; //number of subjects
@@ -394,7 +395,7 @@ kappa[i,k] ~ normal(mu_kappa, sigma_kappa);
 mu_kappa ~ normal(0,5);
 sigma_kappa ~ cauchy(0,5);
 
-alpha ~ lognormal(0,sigma_alpha); 
+alpha ~ lognormal(0,sigma_alpha);
 sigma_alpha ~ cauchy(0,5);
 
 
@@ -403,7 +404,7 @@ theta ~ multi_normal_cholesky(mu_d, L_corr_d); // latent factor multivariate nor
 
 }
 
-// 
+//
 generated quantities {
 corr_matrix[D] corr_d;
 vector[p] log_lik[n]; ///// row log likelihood
@@ -413,7 +414,7 @@ vector[n] log_lik_row;
 
 corr_d = multiply_lower_tri_self_transpose(L_corr_d); // tranform cholesky into correlation matrix
 
-for(i in 1:n){// 
+for(i in 1:n){//
 for(j in 1:p){
 log_lik[i,j] = ordered_logistic_lpmf(x[i,j] | alpha[j] * theta[i,it_d[j]] , kappa[j] );
 }
