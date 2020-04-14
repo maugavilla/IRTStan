@@ -1,4 +1,4 @@
 
 import("rstan")
 import("loo")
-export("run_IRT_Stan", "models_stan", " 	examples_IRTStan.R")
+export("run_IRT_Stan", "models_stan", "examples_IRTStan.R")
