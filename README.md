@@ -4,7 +4,7 @@ For 2PL, 3PL, and GRM models.
 For every model there are unidimensional and multidimensional versions
 
 ```
-# from github:
+# install from github:
 remotes::install_github("maugavilla/IRTStan")
 ```
 or
