@@ -14,7 +14,8 @@ run_IRT_Stan <- function(data,
                          theta = F,
                          convergence_loop = T,
                          Rhat_criteria = 1.05,
-                         personal_model=NULL){
+                         personal_model=NULL,
+                         personal_params=NULL){
 
 
   model <- tolower(model)
@@ -32,11 +33,15 @@ run_IRT_Stan <- function(data,
     stan_mod <- personal_model}
 
   ### get parameters to extract
-  pars <- params[[mod]]
+  if(is.null(personal_params)){
+    pars <- params[[mod]]
 
-  if(log_lik){pars <- c(pars, "log_lik")}
-  if(theta){pars <- c(pars, "theta")}
+    if(log_lik){pars <- c(pars, "log_lik")}
+    if(theta){pars <- c(pars, "theta")}
+  }else{pars <- personal_params}
 
+
+  # get data set ready
   dat_stan <- data_prep(data,
                         model = model,
                         D = D,
