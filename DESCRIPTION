@@ -13,3 +13,4 @@ The multidimensional models are design for factor structures where each item loa
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
+RoxugenNote: 7.1.0
