@@ -12,6 +12,7 @@ run_IRT_Stan <- function(data,
                          cores = parallel::detectCores(),
                          log_lik = F,
                          theta = F,
+                         x_rep = F,
                          convergence_loop = T,
                          Rhat_criteria = 1.05,
                          personal_model=NULL,
@@ -38,6 +39,7 @@ run_IRT_Stan <- function(data,
 
     if(log_lik){pars <- c(pars, "log_lik")}
     if(theta){pars <- c(pars, "theta")}
+    if(x_rep){pars <- c(pars, "x_rep")}
   }else{pars <- personal_params}
 
 

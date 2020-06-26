@@ -42,10 +42,13 @@ vector[n] log_lik[N]; ///// row log likelihood
 real dev; /////// deviance
 real log_lik0; ///// global log likelihood
 vector[N] log_lik_row;
+int<lower=0, upper=1> x_rep[N,n]; // binary data matrix
+
 
 for(i in 1:N){// MIRT formulation
 for(j in 1:n){
 log_lik[i,j] = bernoulli_logit_lpmf(x[i,j] | a[j] * (theta[i] - b[j]) );
+x_rep[i,j] = bernoulli_logit_rng(a[j] * (theta[i] - b[j]) );
 }
 }
 
@@ -117,12 +120,15 @@ vector[n] log_lik[N]; ///// row log likelihood
 real dev; /////// deviance
 real log_lik0; ///// global log likelihood
 vector[N] log_lik_row;
+int<lower=0, upper=1> x_rep[N,n]; // binary data matrix
+
 
 corr_d = multiply_lower_tri_self_transpose(L_corr_d); // tranform cholesky into correlation matrix
 
 for(i in 1:N){// MIRT formulation
 for(j in 1:n){
 log_lik[i,j] = bernoulli_logit_lpmf(x[i,j] | a[j] * (theta[i,it_d[j]] - b[j]) );
+x_rep[i,j] = bernoulli_logit_rng( a[j] * (theta[i,it_d[j]] - b[j]) );
 }
 }
 
@@ -171,10 +177,13 @@ vector[n] log_lik[N]; ///// row log likelihood
 real dev; /////// deviance
 real log_lik0; ///// global log likelihood
 vector[N] log_lik_row;
+int<lower=0, upper=1> x_rep[N,n]; // binary data matrix
+
 
 for(i in 1:N){// MIRT formulation
 for(j in 1:n){
 log_lik[i,j] = bernoulli_lpmf(x[i,j] | c[j] + (1-c[j]) * inv_logit( a[j] * (theta[i] - b[j]) ) );
+x_rep[i,j] = bernoulli_rng( c[j] + (1-c[j]) * inv_logit( a[j] * (theta[i] - b[j]) ) );
 }
 }
 
@@ -248,12 +257,15 @@ vector[n] log_lik[N]; ///// row log likelihood
 real dev; /////// deviance
 real log_lik0; ///// global log likelihood
 vector[N] log_lik_row;
+int<lower=0, upper=1> x_rep[N,n]; // binary data matrix
+
 
 corr_d = multiply_lower_tri_self_transpose(L_corr_d); // tranform cholesky into correlation matrix
 
 for(i in 1:N){// MIRT formulation
 for(j in 1:n){
 log_lik[i,j] = bernoulli_lpmf(x[i,j] | c[j] + (1-c[j]) * inv_logit( a[j] * (theta[i,it_d[j]] - b[j]) ) );
+x_rep[i,j] = bernoulli_rng( c[j] + (1-c[j]) * inv_logit( a[j] * (theta[i,it_d[j]] - b[j]) ) );
 }
 }
 
@@ -325,10 +337,13 @@ vector[p] log_lik[n]; ///// row log likelihood
 real dev; /////// deviance
 real log_lik0; ///// global log likelihood
 vector[n] log_lik_row;
+int x_rep[n,p]; // categorical data matrix
+
 
 for(i in 1:n){//
 for(j in 1:p){
 log_lik[i,j] = ordered_logistic_lpmf(x[i,j] | alpha[j] * theta[i], kappa[j] );
+x_rep[i,j] = ordered_logistic_rng( alpha[j] * theta[i], kappa[j] );
 }
 }
 
@@ -411,12 +426,15 @@ vector[p] log_lik[n]; ///// row log likelihood
 real dev; /////// deviance
 real log_lik0; ///// global log likelihood
 vector[n] log_lik_row;
+int x_rep[n,p]; // categorical data matrix
+
 
 corr_d = multiply_lower_tri_self_transpose(L_corr_d); // tranform cholesky into correlation matrix
 
 for(i in 1:n){//
 for(j in 1:p){
 log_lik[i,j] = ordered_logistic_lpmf(x[i,j] | alpha[j] * theta[i,it_d[j]] , kappa[j] );
+x_rep[i,j] = ordered_logistic_rng( alpha[j] * theta[i,it_d[j]] , kappa[j] );
 }
 }
 

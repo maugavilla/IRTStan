@@ -13,18 +13,21 @@ dim(lsat)
 ex_2pl_1d <- run_IRT_Stan(data=lsat,
                          model = c("2PL"),
                          D = 1,
-                         burnin = 3000,
+                         burnin = 2000,
                          sample = 1000,
                          chains=3,
                          cores = parallel::detectCores(),
                          log_lik = T,
                          theta = T,
+                         x_rep = T,
                          convergence_loop = T,
                          Rhat_criteria = 1.05)
 ex_2pl_1d
 
 print(ex_2pl_1d, pars=c("a","b"))
 print(ex_2pl_1d, pars=c("theta"))
+print(ex_2pl_1d, pars=c("x_rep"))
+
 
 ex_ll_2pl <- extract_log_lik(ex_2pl_1d, merge_chains = FALSE)
 loo_2pl <- loo(ex_ll_2pl, r_eff = relative_eff(exp(ex_ll_2pl)) )
